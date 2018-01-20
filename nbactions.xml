@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+    <action>
+        <actionName>CUSTOM-install</actionName>
+        <displayName>install</displayName>
+        <goals>
+            <goal>clean</goal>
+            <goal>install</goal>
+        </goals>
+    </action>
+    <action>
+        <actionName>CUSTOM-test</actionName>
+        <displayName>script:test</displayName>
+        <goals>
+            <goal>exec:exec</goal>
+        </goals>
+        <properties>
+            <exec.executable>bash</exec.executable>
+            <exec.args>.scripts/test.sh</exec.args>
+        </properties>
+    </action>
+    <action>
+        <actionName>CUSTOM-test</actionName>
+        <displayName>script:review</displayName>
+        <goals>
+            <goal>exec:exec</goal>
+        </goals>
+        <properties>
+            <exec.executable>bash</exec.executable>
+            <exec.args>.scripts/review.sh</exec.args>
+        </properties>
+    </action>
+</actions>

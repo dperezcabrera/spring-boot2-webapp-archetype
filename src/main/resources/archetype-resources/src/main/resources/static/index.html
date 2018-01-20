@@ -1,0 +1,35 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<!DOCTYPE html>
+<html lang="es" xmlns:ng="http://angularjs.org" id="ng-app" ng-app="App">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="icon" href="images/logo.png">
+        <title>App ${artifactId}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="webjars/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="styles/app.css" />
+        <!--[if lt IE 9]>
+            <script type="text/javascript" src="scripts/html5shiv.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="main" ng-view></div>
+        <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript" src="webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="webjars/angularjs/1.6.6/angular.min.js"></script>
+        <script type="text/javascript" src="webjars/angularjs/1.6.6/angular-animate.min.js"></script>
+        <script type="text/javascript" src="webjars/angularjs/1.6.6/angular-sanitize.min.js"></script>
+        <script type="text/javascript" src="webjars/angularjs/1.6.6/angular-resource.min.js"></script>
+        <script type="text/javascript" src="webjars/angularjs/1.6.6/angular-route.min.js"></script>
+        <script type="text/javascript" src="scripts/services_app.js"></script>
+        <script type="text/javascript" src="scripts/controllers_app.js"></script>
+        <script type="text/javascript" src="scripts/controllers/login_controller.js"></script>
+        <script type="text/javascript" src="scripts/controllers/home_controller.js"></script>
+        <script type="text/javascript" src="scripts/app.js"></script>
+    </body>
+</html>
