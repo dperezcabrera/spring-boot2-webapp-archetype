@@ -16,7 +16,6 @@ public class AuditorServiceImpl implements AuditorAware<String> {
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             return Optional.of(SecurityContextHolder.getContext().getAuthentication().getName().toUpperCase());
         }
-        //return Optional.empty();
-        return Optional.of("alice@email.org");
+        return Optional.empty();
     }
 }
