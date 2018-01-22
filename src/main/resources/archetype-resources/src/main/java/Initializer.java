@@ -60,8 +60,6 @@ public class Initializer implements CommandLineRunner {
         groupRepository.findByUserRole(userRepository.getOne(1L), roleRepository.findAll()).stream().map(t -> t.toString()).forEach(log::info);
         
         log.info("\nsearch by user 2");
-        groupRepository.findByUserRole(userRepository.getOne(2L), roleRepository.findAll()).stream().map(t -> t.toString()).forEach(log::info);
-        
-        userService.addUser(new UserDto());        
+        groupRepository.findByUserRole(userRepository.getOne(2L), roleRepository.findAll()).stream().map(t -> t.toString()).forEach(log::info);      
     }
 }
