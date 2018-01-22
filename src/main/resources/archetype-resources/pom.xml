@@ -49,7 +49,7 @@
         <springfox-swagger2.version>2.7.0</springfox-swagger2.version>
         <eclipselink.version>2.7.0</eclipselink.version>
         <jaxb-api.version>2.3.0</jaxb-api.version>
-        <bootstrap.version>3.3.7-1</bootstrap.version>
+        <bootstrap.version>4.0.0</bootstrap.version>
         <angularjs.version>1.6.6</angularjs.version>
         <jquery.version>3.2.1</jquery.version>
         <font-awesome.version>4.7.0</font-awesome.version>

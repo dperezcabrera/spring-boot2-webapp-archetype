@@ -1,6 +1,6 @@
 <div class="view-panel container-fluid">
-    <div ng-show="vm.state === 'login'">
-        <div class="form-group">
+    <div ng-show="vm.state === 'login'" class="container-fluid">
+        <div class="row">
             <div class="col-md-6"></div>
             <div class="col-md-5">
                 <div>
@@ -11,7 +11,9 @@
                                     <label for="username" class="cols-sm-2 control-label">E-mail</label>
                                     <div class="cols-sm-10">
                                         <div class="input-group">
-                                            <span class="form-background-label input-group-addon"><i class="login-color fa fa-users fa" aria-hidden="true"></i></span>
+                                            <div class="input-group-prepend">
+                                                <div class="form-background-label input-group-text"><i class="login-color fa fa-user fa" aria-hidden="true"></i></div>
+                                            </div>
                                             <input type="text" class="form-border-input form-control" name="username" id="username" required="" placeholder="Introduce tu e-mail" data-ng-model="vm.credentials.login"/>
                                         </div>
                                     </div>
@@ -21,7 +23,9 @@
                                     <label for="password" class="cols-sm-2 control-label">Contraseña</label>
                                     <div class="cols-sm-10">
                                         <div class="input-group">
-                                            <span class="form-background-label input-group-addon"><i class="login-color fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                            <div class="input-group-prepend">
+                                                <div class="form-background-label input-group-text"><i class="login-color fa fa-lock fa" aria-hidden="true"></i></div>
+                                            </div>
                                             <input type="password" class="form-border-input form-control" name="password" id="password" required="" placeholder="Introduce la contraseña" data-ng-model="vm.credentials.password"/>
                                         </div>
                                     </div>
