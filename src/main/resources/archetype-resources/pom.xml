@@ -52,8 +52,13 @@
         <bootstrap.version>4.0.0</bootstrap.version>
         <angularjs.version>1.6.8</angularjs.version>
         <jquery.version>3.3.1</jquery.version>
-        <font-awesome.version>5.0.2</font-awesome.version>
+        <font-awesome.version>5.0.6</font-awesome.version>
         <mapstruct.version>1.2.0.Final</mapstruct.version>
+        <!-- plugins  -->
+        <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
+        <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
+        <docker-maven-plugin.version>1.0.0</docker-maven-plugin.version>
     </properties>
  
     <dependencies>
@@ -220,14 +225,31 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <encoding>utf-8</encoding>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                     <fork>true</fork>
                      <compilerargs>
                         <arg>-Werror</arg>
@@ -250,7 +272,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19.1</version>
+                <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <includes>
                         <include>**/*Test.java</include>
@@ -267,7 +289,7 @@
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>1.0.0</version>
+                <version>${docker-maven-plugin.version}</version>
                 <!-- mvn clean package docker:build -->
                 <!-- docker run -it - -rm -p 8080:8080 dperezcabrera/${artifactId} -->
                 <configuration>
