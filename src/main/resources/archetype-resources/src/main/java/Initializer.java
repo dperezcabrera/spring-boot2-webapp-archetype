@@ -56,10 +56,10 @@ public class Initializer implements CommandLineRunner {
         permissionRepository.save(new Permission(new PermissionId(userRepository.getOne(1L), groups.get(3), roleRepository.getOne(1L))));
         permissionRepository.save(new Permission(new PermissionId(userRepository.getOne(2L), groups.get(3), roleRepository.getOne(1L))));
 
-        log.info("\nsearch by user 1");
+        log.info("search by user 1");
         groupRepository.findByUserRole(userRepository.getOne(1L), roleRepository.findAll()).stream().map(t -> t.toString()).forEach(log::info);
         
-        log.info("\nsearch by user 2");
+        log.info("search by user 2");
         groupRepository.findByUserRole(userRepository.getOne(2L), roleRepository.findAll()).stream().map(t -> t.toString()).forEach(log::info);      
     }
 }
