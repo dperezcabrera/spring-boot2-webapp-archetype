@@ -28,7 +28,7 @@ public class GlobalControllerExceptionHandler {
 
     @ExceptionHandler(value = {Exception.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public MessageDto internarServerError(Exception ex) {
+    public MessageDto internalServerError(Exception ex) {
         return new MessageDto("Internal error");
     }
 }
