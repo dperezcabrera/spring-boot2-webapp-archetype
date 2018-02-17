@@ -50,7 +50,7 @@
         <eclipselink.version>2.7.1</eclipselink.version>
         <jaxb-api.version>2.3.0</jaxb-api.version>
         <bootstrap.version>4.0.0</bootstrap.version>
-        <angularjs.version>1.6.8</angularjs.version>
+        <angularjs.version>1.6.9</angularjs.version>
         <jquery.version>3.3.1</jquery.version>
         <font-awesome.version>5.0.6</font-awesome.version>
         <mapstruct.version>1.2.0.Final</mapstruct.version>
