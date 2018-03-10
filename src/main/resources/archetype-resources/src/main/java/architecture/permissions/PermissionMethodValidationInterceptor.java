@@ -3,7 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package}.architecture.permissions;
 
-import ${package}.architecture.utilities.ReflectionUtil;
+import ${package}.architecture.common.ReflectionUtil;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -88,9 +88,9 @@ public class PermissionMethodValidationInterceptor implements MethodInterceptor 
     private static RoleCondition buildFromString(String value) {
         RoleCondition result = null;
         if (value.startsWith(ALL_OF_PREFIX)) {
-            result = new AllRolesCondition(Arrays.stream(value.substring(ALL_OF_PREFIX.length()).split("\\,|\\s|;|:")).filter(s -> s != null && !s.isEmpty()).collect(Collectors.toSet()));
+            result = new AllRolesCondition(Arrays.stream(value.substring(ALL_OF_PREFIX.length()).split("${symbol_escape}${symbol_escape},|${symbol_escape}${symbol_escape}s|;|:")).filter(s -> s != null && !s.isEmpty()).collect(Collectors.toSet()));
         } else if (value.startsWith(ANY_OF_PREFIX)) {
-            result = new AnyRoleCondition(Arrays.stream(value.substring(ANY_OF_PREFIX.length()).split("\\,|\\s|;|:")).filter(s -> s != null && !s.isEmpty()).collect(Collectors.toSet()));
+            result = new AnyRoleCondition(Arrays.stream(value.substring(ANY_OF_PREFIX.length()).split("${symbol_escape}${symbol_escape},|${symbol_escape}${symbol_escape}s|;|:")).filter(s -> s != null && !s.isEmpty()).collect(Collectors.toSet()));
         } else {
             result = new RolesConditionBase(value);
         }

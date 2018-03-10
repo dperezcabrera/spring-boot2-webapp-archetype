@@ -3,7 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package}.architecture.logging;
 
-import ${package}.architecture.utilities.ReflectionUtil;
+import ${package}.architecture.common.ReflectionUtil;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;

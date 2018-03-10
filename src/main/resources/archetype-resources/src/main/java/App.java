@@ -5,12 +5,19 @@ package ${package};
 
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
-import ${package}.architecture.annotations.WebApplication;
+import ${package}.architecture.logging.EnableAutoLogging;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@WebApplication
+@EnableCaching
+//@EnableSwagger2
+@EnableJpaAuditing
+@SpringBootApplication
+@EnableAutoLogging
 public class App implements WebMvcConfigurer {
 
     @Override
@@ -24,8 +31,8 @@ public class App implements WebMvcConfigurer {
     }
 
     public static void main(String[] args) {
-        SpringApplication ${artifactId} = new SpringApplication(App.class);
-        ${artifactId}.setBannerMode(Banner.Mode.OFF);
-        ${artifactId}.run(args);
+        SpringApplication app = new SpringApplication(App.class);
+        app.setBannerMode(Banner.Mode.OFF);
+        app.run(args);
     }
 }

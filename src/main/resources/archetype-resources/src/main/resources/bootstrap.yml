@@ -1,8 +1,0 @@
-spring:
-  application:
-    name: ${artifactId}
-  cloud:
-    config:
-      uri: http://localhost:8888
-      password: ${CONFIG_SERVICE_PASSWORD}
-      username: user

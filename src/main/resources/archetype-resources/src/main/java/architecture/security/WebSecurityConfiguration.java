@@ -45,7 +45,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private static final String X_XSRF_TOKEN = "X-XSRF-TOKEN";
     private static final String[] AUTH_WHITELIST = {
         "/",
-        "/login",
+        "/auth/login",
         "/*.html",
         "/swagger-ui.html",
         "/**/*.html",
@@ -53,6 +53,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         "/**/*.js",
         "/**/*.jpg",
         "/**/*.gif",
+        "/**/*.mp4",
         "/**/*.png",
         "/webjars/**",
         // -- swagger ui
@@ -85,19 +86,20 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logout().logoutUrl("/logout").invalidateHttpSession(true).deleteCookies("JSESSIONID", XSRF_TOKEN).logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)).and()
                 .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
                 .csrf()
+                .ignoringAntMatchers("/auth/login")
                 .csrfTokenRepository(csrfTokenRepository());
     }
     
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("alice@email.org")
+                .withUser("alice")
                 .password("{noop}1")
-                .roles("USER")
+                .roles("Admin")
                 .and()
-                .withUser("bob@email.org")
+                .withUser("bob")
                 .password("{noop}1")
-                .roles("MANAGER");
+                .roles("User");
     }
 
     private CsrfTokenRepository csrfTokenRepository() {

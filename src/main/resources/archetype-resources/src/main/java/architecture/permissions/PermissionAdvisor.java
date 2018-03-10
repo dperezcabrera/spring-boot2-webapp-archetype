@@ -3,7 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package}.architecture.permissions;
 
-import ${package}.architecture.utilities.ReflectionUtil;
+import ${package}.architecture.common.ReflectionUtil;
 import java.lang.reflect.Method;
 import org.aopalliance.aop.Advice;
 import org.springframework.aop.Pointcut;

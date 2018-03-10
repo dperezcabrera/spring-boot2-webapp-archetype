@@ -9,8 +9,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.0.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>2.0.0.RELEASE</version> <!-- lookup parent from repository -->
     </parent>
     
     <licenses>
@@ -34,10 +33,10 @@
     
     <developers>
         <developer>
-            <email>dperezcabrera</email>
+            <id>dperezcabrera</id>
+            <email>dperezcabrera@gmail.com</email>
             <name>David Pérez Cabrera</name>
             <url>https://github.com/dperezcabrera</url>
-            <id>dperezcabrera</id>
         </developer>
     </developers>
     
@@ -48,9 +47,9 @@
         <maven.compiler.target>1.9</maven.compiler.target>
         <springfox-swagger2.version>2.8.0</springfox-swagger2.version>
         <eclipselink.version>2.7.1</eclipselink.version>
-        <bootstrap.version>4.0.0</bootstrap.version>
+        <bootstrap.version>4.0.0-2</bootstrap.version>
         <angularjs.version>1.6.9</angularjs.version>
-        <jquery.version>3.3.1</jquery.version>
+        <jquery.version>3.3.1-1</jquery.version>
         <font-awesome.version>5.0.6</font-awesome.version>
         <mapstruct.version>1.2.0.Final</mapstruct.version>
         <!-- plugins  -->
@@ -249,7 +248,7 @@
                     <target>${java.version}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <fork>true</fork>
-                     <compilerargs>
+                    <compilerargs>
                         <arg>-Werror</arg>
                         <arg>-Xlint</arg>
                         <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
@@ -289,7 +288,7 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>${docker-maven-plugin.version}</version>
                 <!-- mvn clean package docker:build -->
-                <!-- docker run -it - -rm -p 8080:8080 dperezcabrera/${artifactId} -->
+                <!-- docker run -it -p 8080:8080 dperezcabrera/${artifactId} -->
                 <configuration>
                     <imageName>dperezcabrera/${artifactId}</imageName>
                     <imageTag>${project.version}</imageTag>
