@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableCaching
-//@EnableSwagger2
+@EnableSwagger2
 @EnableJpaAuditing
 @SpringBootApplication
 @EnableAutoLogging
