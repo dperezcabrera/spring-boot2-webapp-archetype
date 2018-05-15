@@ -3,7 +3,6 @@
 #set( $symbol_escape = '\' )
 package ${package}.architecture.auth.entities;
 
-import ${package}.architecture.common.ToStringUtil;
 import java.io.Serializable;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
@@ -27,9 +26,4 @@ public class PermissionId implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private Role role;
-
-    @Override
-    public String toString() {
-        return ToStringUtil.json(this);
-    }
 }

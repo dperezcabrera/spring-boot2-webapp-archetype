@@ -5,7 +5,6 @@ package ${package}.architecture.logging;
 
 import ${package}.architecture.common.ReflectionUtil;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
@@ -16,10 +15,7 @@ import org.springframework.aop.support.StaticMethodMatcherPointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.stereotype.Component;
-
-import lombok.AllArgsConstructor;
 
 @Component
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
@@ -28,29 +24,23 @@ public class LoggingAdvisor extends AbstractPointcutAdvisor {
     private static final long serialVersionUID = 1L;
 
     private static final Advice ADVICE = new LoggingMethodValidationInterceptor();
-    private static Pointcut POINTCUT;
+    private static Pointcut pointcut;
 
-    private ApplicationContext applicationContext;
-        
+    private transient ApplicationContext applicationContext;
+
     @AllArgsConstructor
     private static class LoggingMethodMatcherPointcut extends StaticMethodMatcherPointcut {
 
         private List<String> defaultPackages;
-        private List<Class<?>> excludes;
-        
+
         @Override
         public boolean matches(Method method, Class<?> targetClass) {
             boolean result = false;
-            AnnotationAttributes attributes = LoggingConfigurationSelector.getAutoLoggingConfig();
-            if (attributes != null) {
-                Optional<Logging> opt = ReflectionUtil.getAnnotation(method, targetClass, Logging.class);
-                if (opt.isPresent()) {
-                    result = !opt.get().disabled();
-                } else if (excludes.contains(targetClass)) {
-                    result = false;
-                } else if (method.getDeclaringClass().getPackage() != null) {
-                    result = interfaceMatches(method);
-                }
+            Optional<Logging> opt = ReflectionUtil.getAnnotation(method, targetClass, Logging.class);
+            if (opt.isPresent()) {
+                result = !opt.get().disabled();
+            } else if (method.getDeclaringClass().getPackage() != null) {
+                result = interfaceMatches(method);
             }
             return result;
         }
@@ -69,18 +59,12 @@ public class LoggingAdvisor extends AbstractPointcutAdvisor {
     }
 
     private static synchronized Pointcut getPointcutOrBuild(List<String> defaultPackages) {
-        if (POINTCUT == null){
-            AnnotationAttributes attributes = LoggingConfigurationSelector.getAutoLoggingConfig();
-            List<Class<?>> excludes = Arrays.asList(attributes.getClassArray("excludes"));
-            List<String> basePackages = Arrays.asList(attributes.getStringArray("basePackages"));
-            if (basePackages.isEmpty()){
-                basePackages = defaultPackages;
-            }
-            POINTCUT = new LoggingMethodMatcherPointcut(basePackages, excludes);
+        if (pointcut == null) {
+            pointcut = new LoggingMethodMatcherPointcut(defaultPackages);
         }
-        return POINTCUT;
+        return pointcut;
     }
-    
+
     @Override
     public Pointcut getPointcut() {
         return getPointcutOrBuild(AutoConfigurationPackages.get(applicationContext));
@@ -89,5 +73,5 @@ public class LoggingAdvisor extends AbstractPointcutAdvisor {
     @Override
     public Advice getAdvice() {
         return ADVICE;
-    }
+    }   
 }

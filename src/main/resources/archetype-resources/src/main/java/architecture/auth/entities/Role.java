@@ -3,7 +3,6 @@
 #set( $symbol_escape = '\' )
 package ${package}.architecture.auth.entities;
 
-import ${package}.architecture.common.ToStringUtil;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,9 +31,4 @@ public class Role implements Serializable {
 
     @Column(nullable = false, length = 64)
     private String description;
-
-    @Override
-    public String toString() {
-        return ToStringUtil.json(this);
-    }
 }

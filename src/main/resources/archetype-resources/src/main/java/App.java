@@ -5,7 +5,6 @@ package ${package};
 
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
-import ${package}.architecture.logging.EnableAutoLogging;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -18,7 +17,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @EnableJpaAuditing
 @SpringBootApplication
-@EnableAutoLogging
 public class App implements WebMvcConfigurer {
 
     @Override

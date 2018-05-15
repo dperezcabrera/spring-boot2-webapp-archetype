@@ -3,7 +3,6 @@
 #set( $symbol_escape = '\' )
 package ${package}.architecture.auth.entities;
 
-import ${package}.architecture.common.ToStringUtil;
 import ${package}.architecture.common.AuditableEntity;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
@@ -23,9 +22,4 @@ public class Permission extends AuditableEntity implements Serializable {
 
     @EmbeddedId
     private PermissionId id;
-
-    @Override
-    public String toString() {
-        return ToStringUtil.json(this);
-    }
 }

@@ -13,9 +13,4 @@ import lombok.NoArgsConstructor;
 public class MessageDto {
 
     private String description;
-     
-    @Override
-    public String toString() {
-        return ToStringUtil.json(this);
-    }
 }

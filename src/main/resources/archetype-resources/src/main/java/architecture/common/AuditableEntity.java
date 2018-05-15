@@ -29,9 +29,4 @@ public abstract class AuditableEntity {
     
     @LastModifiedBy
     private String lastModificationUser;
-    
-    @Override
-    public String toString() {
-        return ToStringUtil.json(this);
-    }
 }

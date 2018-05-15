@@ -3,11 +3,13 @@
 #set( $symbol_escape = '\' )
 package ${package}.architecture.logging;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class LoggingMethodValidationInterceptor implements MethodInterceptor {
 
     @Override
@@ -27,7 +29,7 @@ public class LoggingMethodValidationInterceptor implements MethodInterceptor {
             int numParameters = mi.getMethod().getParameterCount();
             logger.debug("{} start", methodName);
             if (logParameters && numParameters > 0) {
-                logger.trace(methodName + " start (" + patternParameters(mi.getArguments().length) + ")", mi.getArguments());
+                logger.trace("{} start ({})", methodName, mi.getArguments());
             }
             long time = System.currentTimeMillis();
             Object result = mi.proceed();
@@ -44,19 +46,5 @@ public class LoggingMethodValidationInterceptor implements MethodInterceptor {
             throw e;
         }
     }
-
-    private static String patternParameters(int numParameters) {
-        String result;
-        if (numParameters > 0) {
-            StringBuilder sb = new StringBuilder(numParameters * 4 -2);
-            sb.append("{}");
-            for (int i = 1; i < numParameters; i++) {
-                sb.append(", {}");
-            }
-            result = sb.toString();
-        } else {
-            result = "";
-        }
-        return result;
-    }
 }
+

@@ -3,7 +3,6 @@
 #set( $symbol_escape = '\' )
 package ${package}.architecture.auth.dtos;
 
-import ${package}.architecture.common.ToStringUtil;
 import java.util.List;
 import lombok.Data;
 
@@ -16,9 +15,4 @@ public class UserDto {
     private String surname;
     private String email;
     private List<String> roles;
-
-    @Override
-    public String toString() {
-        return ToStringUtil.json(this);
-    }
 }
