@@ -3,7 +3,6 @@
 #set( $symbol_escape = '\' )
 package ${package}.architecture.auth.entities;
 
-import  ${package}.architecture.common.AuditableEntity;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;

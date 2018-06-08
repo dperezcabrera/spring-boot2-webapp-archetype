@@ -64,6 +64,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private SessionRegistry sessionRegistry;
 
+    private SimpleAuthenticationProvider authenticationProvider;
+     
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -92,14 +94,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("alice")
-                .password("{noop}1")
-                .roles("Admin")
-                .and()
-                .withUser("bob")
-                .password("{noop}1")
-                .roles("User");
+        auth.authenticationProvider(authenticationProvider);
     }
 
     private CsrfTokenRepository csrfTokenRepository() {

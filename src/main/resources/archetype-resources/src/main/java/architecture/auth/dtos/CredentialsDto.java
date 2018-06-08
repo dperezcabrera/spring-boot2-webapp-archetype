@@ -3,7 +3,6 @@
 #set( $symbol_escape = '\' )
 package ${package}.architecture.auth.dtos;
 
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,9 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CredentialsDto {
 
-    @NotNull
     private String username;
-
-    @NotNull
     private String password;
 }

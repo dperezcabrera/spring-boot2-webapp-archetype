@@ -26,7 +26,7 @@ public class App implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("/static/index.html");
+        registry.addViewController("/").setViewName("/index.html");
     }
 
     public static void main(String[] args) {
