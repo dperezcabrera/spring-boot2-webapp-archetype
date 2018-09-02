@@ -10,10 +10,12 @@
                 <logLevel/>
                 <loggerName/>
                 <pattern>
-                    {
-                    "appName": "${artifactId}",
-                    "appVersion": "${version}"
-                    }
+                    <pattern>
+                        {
+                        "appName": "${artifactId}",
+                        "appVersion": "${version}"
+                        }
+                    </pattern>
                 </pattern>
                 <threadName/>
                 <message/>
