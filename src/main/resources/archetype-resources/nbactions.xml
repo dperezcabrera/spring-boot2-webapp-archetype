@@ -32,6 +32,13 @@
         </goals>
     </action>
     <action>
+        <actionName>CUSTOM-versions</actionName>
+        <displayName>versions</displayName>
+        <goals>
+            <goal>versions:display-dependency-updates</goal>
+        </goals>
+    </action>
+    <action>
         <actionName>run</actionName>
         <packagings>
             <packaging>jar</packaging>

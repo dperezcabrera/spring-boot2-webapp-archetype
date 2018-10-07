@@ -9,7 +9,8 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.5.RELEASE</version> <!-- lookup parent from repository -->
+        <version>2.1.0.M4</version> 
+        <relativePath/>
     </parent>
     
     <licenses>
@@ -42,16 +43,17 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>10</java.version>
-        <lombok.version>1.18.0</lombok.version>
+        <java.version>11</java.version>
+        <lombok.version>1.18.2</lombok.version>
         <logstash-logback.version>5.2</logstash-logback.version>
         <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
         <eclipselink.version>2.7.3</eclipselink.version>
         <bootstrap.version>4.1.3</bootstrap.version>
         <angularjs.version>1.7.4</angularjs.version>
         <jquery.version>3.3.1-1</jquery.version>
-        <font-awesome.version>5.2.0</font-awesome.version>
+        <font-awesome.version>5.3.1</font-awesome.version>
         <mapstruct.version>1.2.0.Final</mapstruct.version>
+        <junit-platform.version>1.3.1</junit-platform.version>
         <!-- plugins  -->
         <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
         <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
@@ -199,12 +201,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
-                </exclusion>
-            </exclusions>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -215,7 +211,6 @@
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-runner</artifactId>
-            <version>${junit-platform.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>    
@@ -274,7 +269,7 @@
                     <imageName>dperezcabrera/${artifactId}</imageName>
                     <imageTag>${project.version}</imageTag>
                     <imageTag>latest</imageTag>
-                    <baseImage>openjdk:10-jre-slim</baseImage>
+                    <baseImage>openjdk:11-jre-slim</baseImage>
                     <entryPoint>["java", "-jar", "/${project.build.finalName}.jar", "--logging.config=/conf/logback.xml"]</entryPoint>
                     <!--<entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>-->
                     <resources>
@@ -293,4 +288,40 @@
             </plugin>
         </plugins>
     </build>
+    <repositories>
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
