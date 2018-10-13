@@ -17,12 +17,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 @Slf4j
@@ -36,7 +35,7 @@ public class AuthenticationController {
 
     private UserService userService;
 
-    @RequestMapping(path = "/auth/login", method = RequestMethod.GET)
+    @GetMapping("/auth/login")
     public ResponseEntity<UserDto> login() {
         ResponseEntity<UserDto> result;
         String username = SecurityContextHolder.getContext().getAuthentication().getName().toUpperCase();
@@ -49,7 +48,7 @@ public class AuthenticationController {
         return result;
     }
 
-    @RequestMapping(path = "/auth/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/auth/login")
     public ResponseEntity<UserDto> login(HttpServletRequest request, @RequestBody CredentialsDto credentialsDto) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(credentialsDto.getUsername(), credentialsDto.getPassword());
         try {
