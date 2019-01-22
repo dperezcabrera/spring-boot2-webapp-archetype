@@ -38,7 +38,7 @@ import lombok.AllArgsConstructor;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @Order(SecurityProperties.BASIC_AUTH_ORDER)
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
+@AllArgsConstructor
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private static final String XSRF_TOKEN = "XSRF-TOKEN";
@@ -62,9 +62,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         "/v2/api-docs"
     };
 
-    private SessionRegistry sessionRegistry;
+    private final SessionRegistry sessionRegistry;
 
-    private SimpleAuthenticationProvider authenticationProvider;
+    private final SimpleAuthenticationProvider authenticationProvider;
      
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
     @Override

@@ -10,19 +10,18 @@ import ${package}.architecture.auth.repositories.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
 @Service
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
+@AllArgsConstructor
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private PermissionRepository permissionRepository;
+    private final PermissionRepository permissionRepository;
 
     private List<String> roles(long id) {
         return permissionRepository.findByUserId(id).stream()

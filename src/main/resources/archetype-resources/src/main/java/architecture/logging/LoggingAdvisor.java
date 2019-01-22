@@ -18,7 +18,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
+@AllArgsConstructor
 public class LoggingAdvisor extends AbstractPointcutAdvisor {
 
     private static final long serialVersionUID = 1L;

@@ -8,7 +8,6 @@ import ${package}.architecture.auth.dtos.UserDto;
 import ${package}.architecture.auth.services.UserService;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,14 +25,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 @Slf4j
 @RestController
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
+@AllArgsConstructor
 public class AuthenticationController {
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    private SessionRegistry sessionRegistry;
+    private final SessionRegistry sessionRegistry;
 
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping("/auth/login")
     public ResponseEntity<UserDto> login() {

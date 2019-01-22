@@ -11,7 +11,6 @@ import ${package}.architecture.auth.repositories.UserRepository;
 import ${package}.architecture.auth.repositories.RoleRepository;
 import ${package}.architecture.auth.repositories.PermissionRepository;
 import ${package}.architecture.auth.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +19,7 @@ import lombok.AllArgsConstructor;
 
 @Slf4j
 @Configuration
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
+@AllArgsConstructor
 public class Initializer implements CommandLineRunner {
 
     private UserService userService;

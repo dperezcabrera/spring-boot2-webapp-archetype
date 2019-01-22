@@ -9,18 +9,17 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component("roleChecker")
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
+@AllArgsConstructor
 public class RoleChecker {
 
-    private PermissionRepository permissionRepository;
+    private final PermissionRepository permissionRepository;
 
-    private AuditorAware<String> autidorAware;
+    private final AuditorAware<String> autidorAware;
 
     @Transactional(readOnly = true)
     public boolean hasRole(String role) {
