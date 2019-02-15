@@ -23,6 +23,8 @@ public class UserService {
 
     private final PermissionRepository permissionRepository;
 
+	private final UserMapper userMapper;
+	
     private List<String> roles(long id) {
         return permissionRepository.findByUserId(id).stream()
                 .map(p -> p.getId().getRole().getName())
@@ -41,7 +43,7 @@ public class UserService {
         UserDto result = null;
         if (opt.isPresent()) {
             User usuario = opt.get();
-            result = UserMapper.MAPPER.map(usuario, roles(usuario.getId()));
+            result = userMapper.map(usuario, roles(usuario.getId()));
         }
         return result;
     }

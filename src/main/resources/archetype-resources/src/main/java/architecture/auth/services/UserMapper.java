@@ -7,13 +7,9 @@ import ${package}.architecture.auth.dtos.UserDto;
 import ${package}.architecture.auth.entities.User;
 import java.util.List;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
-
-@Mapper
+@Mapper(componentModel = "spring")
 public interface UserMapper {
-
-    final UserMapper MAPPER = Mappers.getMapper(UserMapper.class);
 
     UserDto map(User user, List<String> roles);
 }
