@@ -10,10 +10,10 @@ import ${package}.architecture.auth.repositories.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.springframework.stereotype.Service;
-
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -31,20 +31,20 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public UserDto getUser(long userId) {
-        return getUser(userRepository.findById(userId));
-    }
+	public UserDto getUser(long userId) {
+		return map(userRepository.getOne(userId));
+	}
 
-    public UserDto getUser(@NonNull String username) {
-        return getUser(userRepository.findByUsername(username));
-    }
+	@Transactional(readOnly = true)
+	public Optional<UserDto> getUser(@NonNull String username) {
+		return userRepository.findByUsername(username.toLowerCase()).map(this::map);
+	}
 
-    private UserDto getUser(Optional<User> opt) {
-        UserDto result = null;
-        if (opt.isPresent()) {
-            User usuario = opt.get();
-            result = userMapper.map(usuario, roles(usuario.getId()));
-        }
-        return result;
-    }
+	private UserDto map(User user) {
+		UserDto result = null;
+		if (user != null) {
+			result = userMapper.map(user, roles(user.getId()));
+		}
+		return result;
+	}
 }

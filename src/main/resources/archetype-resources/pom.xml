@@ -43,14 +43,18 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>11</java.version>
-        <logstash-logback.version>5.3</logstash-logback.version>
+        <java.version>12</java.version>
+        <logstash-logback.version>6.1</logstash-logback.version>
         <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
         <eclipselink.version>2.7.4</eclipselink.version>
+        <commons-text.version>1.6</commons-text.version>
         <bootstrap.version>4.3.1</bootstrap.version>
         <angularjs.version>1.7.7</angularjs.version>
         <jquery.version>3.3.1-2</jquery.version>
+        <angular-ui-router.version>1.0.20</angular-ui-router.version>
+        <angular-toastr.version>2.1.1</angular-toastr.version>
         <font-awesome.version>5.7.2</font-awesome.version>
+        <angular-ui-bootstrap.version>2.5.0</angular-ui-bootstrap.version>
         <mapstruct.version>1.3.0.Final</mapstruct.version>
         <junit-platform.version>1.3.1</junit-platform.version>
         <!-- plugins  -->
@@ -126,7 +130,7 @@
             <artifactId>httpclient</artifactId>
         </dependency>
         
-        <!-- Web -->
+             <!-- Web -->
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
@@ -146,6 +150,21 @@
             <groupId>org.webjars</groupId>
             <artifactId>font-awesome</artifactId>
             <version>${font-awesome.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>angular-ui-router</artifactId>
+            <version>${angular-ui-router.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>angular-toastr</artifactId>
+            <version>${angular-toastr.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>angular-ui-bootstrap</artifactId>
+            <version>${angular-ui-bootstrap.version}</version>
         </dependency>
         
         <!-- Logging -->
@@ -256,7 +275,7 @@
                     <imageName>dperezcabrera/${artifactId}</imageName>
                     <imageTag>${project.version}</imageTag>
                     <imageTag>latest</imageTag>
-                    <baseImage>openjdk:11-jre-slim</baseImage>
+                    <baseImage>openjdk:12-jdk-oracle</baseImage>
                     <entryPoint>["java", "-jar", "/${project.build.finalName}.jar", "--logging.config=/conf/logback.xml"]</entryPoint>
                     <!--<entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>-->
                     <resources>

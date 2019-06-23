@@ -14,7 +14,7 @@ public class AuditorServiceBase implements AuditorAware<String> {
     @Override
     public Optional<String> getCurrentAuditor() {
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
-            return Optional.of(SecurityContextHolder.getContext().getAuthentication().getName().toUpperCase());
+            return Optional.of(SecurityContextHolder.getContext().getAuthentication().getName().toLowerCase());
         }
         return Optional.empty();
     }

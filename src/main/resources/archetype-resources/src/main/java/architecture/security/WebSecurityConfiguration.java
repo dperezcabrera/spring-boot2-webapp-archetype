@@ -9,7 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,8 +32,6 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
-import lombok.AllArgsConstructor;
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -45,9 +43,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private static final String X_XSRF_TOKEN = "X-XSRF-TOKEN";
     private static final String[] AUTH_WHITELIST = {
         "/",
-        "/auth/login",
+        "/auth/**",
         "/*.html",
-        "/swagger-ui.html",
         "/**/*.html",
         "/**/*.css",
         "/**/*.js",
@@ -65,7 +62,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final SessionRegistry sessionRegistry;
 
     private final SimpleAuthenticationProvider authenticationProvider;
-     
+
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -85,13 +82,13 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .logout().logoutUrl("/logout").invalidateHttpSession(true).deleteCookies("JSESSIONID", XSRF_TOKEN).logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)).and()
+                .logout().logoutUrl("/auth/logout").invalidateHttpSession(true).deleteCookies("JSESSIONID", XSRF_TOKEN).logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)).and()
                 .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
                 .csrf()
-                .ignoringAntMatchers("/auth/login")
+                .ignoringAntMatchers("/auth/**")
                 .csrfTokenRepository(csrfTokenRepository());
     }
-    
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider);
