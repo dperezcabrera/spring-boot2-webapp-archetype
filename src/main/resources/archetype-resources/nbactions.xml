@@ -65,4 +65,21 @@
             <jpda.listen>true</jpda.listen>
         </properties>
     </action>
+    <action>
+        <actionName>CUSTOM-update-versions</actionName>
+        <displayName>update-versions</displayName>
+        <goals>
+            <goal>versions:update-properties</goal>
+            <goal>-DexcludeProperties=angularjs.version</goal>
+            <goal>-DprocessParent=true</goal>
+            <goal>-DgenerateBackupPoms=false</goal>
+        </goals>
+    </action>
+    <action>
+        <actionName>CUSTOM-dependency-check</actionName>
+        <displayName>dependency-check</displayName>
+        <goals>
+            <goal>org.owasp:dependency-check-maven:5.3.0:check</goal>
+        </goals>
+    </action>
 </actions>
