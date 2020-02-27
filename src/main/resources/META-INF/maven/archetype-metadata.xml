@@ -36,10 +36,15 @@
       <directory></directory>
       <includes>
         <include>.gitignore</include>
-        <include>.travis.yml</include>
         <include>nbactions.xml</include>
         <include>Dockerfile</include>
         <include>logback.xml</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>dev-scripts</directory>
+      <includes>
+        <include>app</include>
       </includes>
     </fileSet>
   </fileSets>

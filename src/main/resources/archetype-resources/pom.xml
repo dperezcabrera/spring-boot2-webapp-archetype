@@ -44,7 +44,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>13</java.version>
-        <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
+        <springdoc-openapi.version>1.2.30</springdoc-openapi.version>
         <eclipselink.version>2.7.5</eclipselink.version>
         <commons-text.version>1.8</commons-text.version>
         <bootstrap.version>4.4.1</bootstrap.version>
@@ -81,14 +81,9 @@
         
         <!-- Documentation -->
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${springfox-swagger2.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>${springfox-swagger2.version}</version>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc-openapi.version}</version>
         </dependency>
         
         <!-- Spring Boot -->

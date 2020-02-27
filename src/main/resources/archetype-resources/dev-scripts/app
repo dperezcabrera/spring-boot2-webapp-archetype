@@ -1,0 +1,256 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+${symbol_dollar}{symbol_pound}! /bin/bash
+
+${symbol_dollar}{symbol_pound} Initialization
+LOCATION="${symbol_dollar}( cd "${symbol_dollar}( dirname "${symbol_dollar}{BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT=`echo ${symbol_dollar}0 | rev | cut -f1 -d"/" | rev`
+CONFIG_SCRIPT="${symbol_dollar}LOCATION/.config_${symbol_dollar}SCRIPT"
+
+${symbol_dollar}{symbol_pound} Load configuration
+if [ -f "${symbol_dollar}CONFIG_SCRIPT" ]; then
+    . "${symbol_dollar}CONFIG_SCRIPT"
+fi
+
+cd "${symbol_dollar}( cd "${symbol_dollar}( dirname "${symbol_dollar}{BASH_SOURCE[0]}" )" && pwd )/.."
+
+
+${symbol_dollar}{symbol_pound} Constants
+
+APP_NAME=${symbol_dollar}{APP_NAME:-app}
+${symbol_dollar}{symbol_pound}ICON_PATH="${symbol_dollar}PWD/dev-scripts/.icons/kutre.png"
+NETWORK=${symbol_dollar}APP_NAME-net
+WEB_NAME=${symbol_dollar}APP_NAME-web
+WEB_PORT=8080
+DEBUG_PORT=8888
+ADMIN_DB_PORT=5050
+ADMIN_DB_NAME=${symbol_dollar}APP_NAME-admin-postgres
+ADMIN_DB_VOLUME=${symbol_dollar}APP_NAME-admin-postgres
+ADMIN_DB_USER=a@a.a
+ADMIN_DB_PASSWORD=1
+DB_NAME=${symbol_dollar}APP_NAME-postgres
+DB_PORT=5432
+DB_VOLUME=${symbol_dollar}APP_NAME-postgres
+DB_SCHEMA=${symbol_dollar}APP_NAME
+DB_USER=${symbol_dollar}APP_NAME
+DB_PASSWORD=password
+TIMEZONE=`timedatectl | grep "Time zone" | cut -f2 -d: | cut -f2 -d" "`
+
+
+${symbol_dollar}{symbol_pound} Actions
+
+function _create_network() {
+    if [ `docker network ls | grep ${symbol_dollar}NETWORK | wc -l` -eq 0 ]; then
+        docker network create "${symbol_dollar}NETWORK"
+    fi
+}
+
+function _create_volume() {
+    volumen=${symbol_dollar}1
+    if [ `docker volume ls | grep ${symbol_dollar}volumen | wc -l` -eq 0 ]; then
+        docker volume create "${symbol_dollar}volumen"
+    fi
+}
+
+function db_start() {
+    _create_network
+    _create_volume ${symbol_dollar}DB_VOLUME
+    docker run --rm -it ${symbol_escape}
+        --name ${symbol_dollar}DB_NAME ${symbol_escape}
+        --network "${symbol_dollar}NETWORK" ${symbol_escape}
+        --volume "${symbol_dollar}DB_VOLUME":/var/lib/postgresql/data ${symbol_escape}
+        --publish ${symbol_dollar}DB_PORT:${symbol_dollar}DB_PORT ${symbol_escape}
+        --env TZ="${symbol_dollar}TIMEZONE" ${symbol_escape}
+        --env POSTGRES_PASSWORD=${symbol_dollar}DB_PASSWORD ${symbol_escape}
+        --env POSTGRES_DB=${symbol_dollar}DB_SCHEMA ${symbol_escape}
+        --env POSTGRES_USER=${symbol_dollar}DB_USER ${symbol_escape}
+        postgres:12-alpine
+}
+
+function admin_db_start() {
+    _create_network
+    _create_volume ${symbol_dollar}ADMIN_DB_VOLUME
+    docker run --rm -it ${symbol_escape}
+        --name ${symbol_dollar}ADMIN_DB_NAME ${symbol_escape}
+        --volume "${symbol_dollar}ADMIN_DB_VOLUME":/var/lib/pgadmin ${symbol_escape}
+        --publish ${symbol_dollar}ADMIN_DB_PORT:80 ${symbol_escape}
+        --network "${symbol_dollar}NETWORK" ${symbol_escape}
+        --env TZ="${symbol_dollar}TIMEZONE" ${symbol_escape}
+        --env "PGADMIN_DEFAULT_EMAIL=${symbol_dollar}ADMIN_DB_USER" ${symbol_escape}
+        --env "PGADMIN_DEFAULT_PASSWORD=${symbol_dollar}ADMIN_DB_PASSWORD" ${symbol_escape}
+        dpage/pgadmin4
+}
+
+function web_start() {
+    _create_network
+    APP_BIN=`ls target/${symbol_dollar}APP_NAME*.jar`
+    docker run --rm -it ${symbol_escape}
+        --name ${symbol_dollar}WEB_NAME ${symbol_escape}
+        --network "${symbol_dollar}NETWORK" ${symbol_escape}
+        --publish ${symbol_dollar}WEB_PORT:8080 ${symbol_escape}
+        --env TZ="${symbol_dollar}TIMEZONE" ${symbol_escape}
+        --env DATABASE_URL="jdbc:postgresql://${symbol_dollar}DB_NAME:${symbol_dollar}DB_PORT/${symbol_dollar}DB_SCHEMA" ${symbol_escape}
+        --env DATABASE_USERNAME="${symbol_dollar}DB_USER" ${symbol_escape}
+        --env DATABASE_PASSWORD="${symbol_dollar}DB_PASSWORD" ${symbol_escape}
+        --env DATABASE_PLATFORM="org.hibernate.dialect.PostgreSQLDialect" ${symbol_escape}
+        --volume "${symbol_dollar}PWD/${symbol_dollar}APP_BIN:/app/spring-boot-app.jar" ${symbol_escape}
+        --volume "${symbol_dollar}PWD/config/docker/application.properties:/app/config/application.properties" ${symbol_escape}
+        openjdk:8-jre-alpine java -jar /app/spring-boot-app.jar --spring.config.location=/app/config/application.properties
+}
+
+function web_debug() {
+    _create_network
+    APP_BIN=`ls target/${symbol_dollar}APP_NAME*.jar`
+    docker run --rm -it ${symbol_escape}
+        --name ${symbol_dollar}WEB_NAME ${symbol_escape}
+        --network "${symbol_dollar}NETWORK" ${symbol_escape}
+        --publish ${symbol_dollar}WEB_PORT:8080 ${symbol_escape}
+        --publish ${symbol_dollar}DEBUG_PORT:8888 ${symbol_escape}
+        --env TZ="${symbol_dollar}TIMEZONE" ${symbol_escape}
+        --env DATABASE_URL="jdbc:postgresql://${symbol_dollar}DB_NAME:${symbol_dollar}DB_PORT/${symbol_dollar}DB_SCHEMA" ${symbol_escape}
+        --env DATABASE_USERNAME="${symbol_dollar}DB_USER" ${symbol_escape}
+        --env DATABASE_PASSWORD="${symbol_dollar}DB_PASSWORD" ${symbol_escape}
+        --env DATABASE_PLATFORM="org.hibernate.dialect.PostgreSQLDialect" ${symbol_escape}
+        --volume "${symbol_dollar}PWD/${symbol_dollar}APP_BIN:/app/spring-boot-app.jar" ${symbol_escape}
+        --volume "${symbol_dollar}PWD/config/docker/application.properties:/app/config/application.properties" ${symbol_escape}
+        openjdk:8-jre-alpine java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,address=8888,suspend=n -jar ${symbol_escape}
+            --spring.config.location=/app/config/application.properties
+}
+
+function admin_db_delete() {
+    docker volume rm ${symbol_dollar}ADMIN_DB_VOLUME
+}
+
+function admin_db_stop() {
+    docker stop ${symbol_dollar}ADMIN_DB_NAME
+}
+
+function db_delete() {
+    docker volume rm ${symbol_dollar}DB_VOLUME
+}
+
+function db_stop() {
+    docker stop ${symbol_dollar}DB_NAME
+}
+
+function db_backup() {
+    docker exec -it ${symbol_dollar}DB_NAME pg_dump --username=${symbol_dollar}DB_USER --dbname=${symbol_dollar}DB_SCHEMA >"db_backup_${symbol_dollar}DB_NAME_"`date +"%Y%m%d%H%M%S"`.sql
+}
+
+function db_ddl() {
+    docker exec -it ${symbol_dollar}DB_NAME pg_dump  --schema-only --username=${symbol_dollar}DB_USER --dbname=${symbol_dollar}DB_SCHEMA --no-owner >"ddl_${symbol_dollar}DB_NAME_"`date +"%Y%m%d%H%M%S"`.sql
+}
+
+
+${symbol_dollar}{symbol_pound} Template functions
+${symbol_dollar}{symbol_pound} ------------------
+
+function shortlist() {
+    echo `compgen -A function | grep -v main | grep -v -E "^_.*"`
+}
+
+function help() {
+    echo "Parametros validos: " `shortlist | tr ' ' '|'`
+}
+
+function _actions() {
+    echo `compgen -A function | grep -v -E "^(main|menu|autocomplete|help|shortlist)${symbol_dollar}" | grep -v -E "^_.*"`
+}
+
+function _extract_variables() {
+    cat "${symbol_dollar}LOCATION/${symbol_dollar}SCRIPT" | grep '=${symbol_dollar}{' | while read line; do
+        VAR=`echo "${symbol_dollar}line" | cut -f1 -d"="`
+        VAR_EXPAND='${symbol_dollar}{'${symbol_dollar}VAR':'
+        VALUE=`echo "${symbol_dollar}line" | cut -f2 -d"=" | cut -f1 -d'-'`
+        if [[ "${symbol_dollar}VAR_EXPAND" == "${symbol_dollar}VALUE" ]] ; then
+            echo "${symbol_dollar}VAR"
+        fi
+        echo ${symbol_dollar}VARS
+    done
+}
+
+function config() {
+    VARS=`_extract_variables`
+    if [ ! -s "${symbol_dollar}VARS" ]; then
+        echo "${symbol_dollar}{symbol_pound}! /bin/bash
+
+${symbol_dollar}{symbol_pound}Configuration of command '${symbol_dollar}SCRIPT'">"${symbol_dollar}CONFIG_SCRIPT"
+
+        for VAR in ${symbol_dollar}{VARS}; do
+            read -p "Write ${symbol_dollar}VAR value or enter to keep current value '${symbol_dollar}{!VAR}': " VAR_VALUE
+            if [ "${symbol_dollar}VAR_VALUE" == "" ]; then
+                VAR_VALUE="${symbol_dollar}{!VAR}"
+            fi
+            echo "${symbol_dollar}VAR=${symbol_dollar}VAR_VALUE" >>"${symbol_dollar}CONFIG_SCRIPT"
+            
+        done
+    fi
+}
+
+${symbol_dollar}{symbol_pound} Bash autocomplete
+function autocomplete() {
+    cd "${symbol_dollar}LOCATION"
+    echo 'cd "${symbol_dollar}( cd "${symbol_dollar}( dirname "${symbol_dollar}{BASH_SOURCE[0]}" )" && pwd )"
+
+_script()
+{
+  _script_commands=${symbol_dollar}(./'${symbol_dollar}SCRIPT' shortlist)
+
+  local cur prev
+  COMPREPLY=()
+  cur="${symbol_dollar}{COMP_WORDS[COMP_CWORD]}"
+  COMPREPLY=( ${symbol_dollar}(compgen -W "${symbol_dollar}{_script_commands}" -- ${symbol_dollar}{cur}) )
+
+  return 0
+}
+complete -F _script ./'${symbol_dollar}SCRIPT'
+'>".autocomplete_${symbol_dollar}SCRIPT"
+    echo source "'${symbol_dollar}LOCATION/.autocomplete_${symbol_dollar}SCRIPT'"
+}
+
+${symbol_dollar}{symbol_pound} Ubuntu launcher
+function menu() {
+    cd "${symbol_dollar}LOCATION"
+    NAME=`echo ${symbol_dollar}SCRIPT | cut -f1 -d"."`
+    ACTIONS=`_actions| tr ' ' ';'`
+    echo "${symbol_dollar}{symbol_pound}!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=true
+Exec=bash -c '${symbol_dollar}LOCATION/${symbol_dollar}SCRIPT'
+Name=`echo "${symbol_dollar}{NAME^}" | tr "_" " "`
+Icon=${symbol_dollar}ICON_PATH
+Actions=${symbol_dollar}ACTIONS
+">"${symbol_dollar}NAME.desktop"
+    
+    for action in `_actions`; do
+        echo "[Desktop Action ${symbol_dollar}action]
+Exec=bash -c '${symbol_dollar}LOCATION/${symbol_dollar}SCRIPT ${symbol_dollar}action'
+Name=`echo "${symbol_dollar}{action^}" | tr "_" " "`
+">>"${symbol_dollar}NAME.desktop"
+    done
+    mv "${symbol_dollar}NAME.desktop" ~/.local/share/applications/
+}
+
+function main() {
+    if [ ${symbol_dollar}${symbol_dollar}{symbol_pound} == 0 ]; then
+	echo "Error: at least one parameter is required."
+        help
+	exit 1
+    fi
+    param="${symbol_dollar}1"
+    shift
+    if [ `shortlist | tr " " "${symbol_escape}n" | grep -E ^"${symbol_dollar}param"${symbol_dollar} | wc -l` == 1 ]; then
+        "${symbol_dollar}param" ${symbol_dollar}@
+    else
+        echo "Error: wrong parameter '"${symbol_dollar}param"'."
+	help
+        exit 1
+    fi
+}
+
+main "${symbol_dollar}@"
+
