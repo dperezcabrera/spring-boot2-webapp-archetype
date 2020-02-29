@@ -7,7 +7,7 @@ import ${package}.architecture.auth.dtos.CredentialsDto;
 import ${package}.architecture.auth.dtos.UserDto;
 import ${package}.architecture.auth.services.UserService;
 import javax.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 @Slf4j
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthenticationController {
 
 	private static final ResponseEntity<?> FORBIDDEN_RESPONSE = ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);

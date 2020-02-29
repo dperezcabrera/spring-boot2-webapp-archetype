@@ -10,20 +10,20 @@ import ${package}.architecture.auth.repositories.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
 
     private final PermissionRepository permissionRepository;
 
-	private final UserMapper userMapper;
+    private final UserMapper userMapper;
 	
     private List<String> roles(long id) {
         return permissionRepository.findByUserId(id).stream()

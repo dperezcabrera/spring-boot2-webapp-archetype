@@ -8,13 +8,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component("roleChecker")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RoleChecker {
 
     private final PermissionRepository permissionRepository;
