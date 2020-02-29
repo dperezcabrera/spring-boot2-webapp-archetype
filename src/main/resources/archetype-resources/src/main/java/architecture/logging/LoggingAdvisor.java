@@ -7,7 +7,7 @@ import ${package}.architecture.common.ReflectionUtil;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.aopalliance.aop.Advice;
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.support.AbstractPointcutAdvisor;
@@ -17,20 +17,20 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class LoggingAdvisor extends AbstractPointcutAdvisor {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Advice ADVICE = new LoggingMethodValidationInterceptor();
-    private static Pointcut pointcut;
+    private Advice advice = new LoggingMethodValidationInterceptor();
+    private Pointcut pointcut;
 
-    private transient ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
 
-    @AllArgsConstructor
+    @RequiredArgsConstructor
     private static class LoggingMethodMatcherPointcut extends StaticMethodMatcherPointcut {
 
-        private List<String> defaultPackages;
+        private final List<String> defaultPackages;
 
         @Override
         public boolean matches(Method method, Class<?> targetClass) {
@@ -47,17 +47,13 @@ public class LoggingAdvisor extends AbstractPointcutAdvisor {
         private boolean interfaceMatches(Method method) {
             String candidatePackageName = method.getDeclaringClass().getPackage().getName();
             if (candidatePackageName != null) {
-                for (String packageBase : defaultPackages) {
-                    if (candidatePackageName.startsWith(packageBase + ".") || candidatePackageName.equals(packageBase)) {
-                        return true;
-                    }
-                }
+                return defaultPackages.stream().anyMatch(p -> (candidatePackageName.startsWith(p + ".") || candidatePackageName.equals(p)));
             }
             return false;
         }
     }
 
-    private static synchronized Pointcut getPointcutOrBuild(List<String> defaultPackages) {
+    private synchronized Pointcut getPointcutOrBuild(List<String> defaultPackages) {
         if (pointcut == null) {
             pointcut = new LoggingMethodMatcherPointcut(defaultPackages);
         }
@@ -71,6 +67,6 @@ public class LoggingAdvisor extends AbstractPointcutAdvisor {
 
     @Override
     public Advice getAdvice() {
-        return ADVICE;
+        return advice;
     }   
 }
