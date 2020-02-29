@@ -7,6 +7,7 @@ import ${package}.architecture.common.ReflectionUtil;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.aopalliance.aop.Advice;
 import org.springframework.aop.Pointcut;
@@ -16,16 +17,19 @@ import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+@Getter
 @Component
-@RequiredArgsConstructor
 public class LoggingAdvisor extends AbstractPointcutAdvisor {
 
     private static final long serialVersionUID = 1L;
 
-    private Advice advice = new LoggingMethodValidationInterceptor();
-    private Pointcut pointcut;
+    private final Advice advice = new LoggingMethodValidationInterceptor();
+    
+    private final Pointcut pointcut;
 
-    private final ApplicationContext applicationContext;
+    public LoggingAdvisor(ApplicationContext applicationContext) {
+        this.pointcut = new LoggingMethodMatcherPointcut(AutoConfigurationPackages.get(applicationContext));
+    }
 
     @RequiredArgsConstructor
     private static class LoggingMethodMatcherPointcut extends StaticMethodMatcherPointcut {
@@ -51,22 +55,5 @@ public class LoggingAdvisor extends AbstractPointcutAdvisor {
             }
             return false;
         }
-    }
-
-    private synchronized Pointcut getPointcutOrBuild(List<String> defaultPackages) {
-        if (pointcut == null) {
-            pointcut = new LoggingMethodMatcherPointcut(defaultPackages);
-        }
-        return pointcut;
-    }
-
-    @Override
-    public Pointcut getPointcut() {
-        return getPointcutOrBuild(AutoConfigurationPackages.get(applicationContext));
-    }
-
-    @Override
-    public Advice getAdvice() {
-        return advice;
     }   
 }
