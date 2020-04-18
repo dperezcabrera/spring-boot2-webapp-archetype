@@ -56,7 +56,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         // -- swagger ui
         "/swagger-resources/**",
         "/swagger-ui.html",
-        "/v2/api-docs"
+        "/v3/api-docs/**"
     };
 
     private final SessionRegistry sessionRegistry;

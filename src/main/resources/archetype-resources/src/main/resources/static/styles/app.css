@@ -1,9 +1,17 @@
-body {
-    background-image: url('../images/background.jpg');
+html,
+body, 
+.main {
+    height: 100%;
 }
 
 .view-panel {
     padding-top:0px;
+    padding-bottom: 0px;
+    background-image: url('../images/background.jpg');
+
+    background-attachment: fixed;
+    background-position: center;
+    height: 100%;
 }
 
 .login-color {
