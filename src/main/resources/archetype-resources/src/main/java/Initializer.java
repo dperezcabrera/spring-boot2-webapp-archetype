@@ -3,14 +3,25 @@
 #set( $symbol_escape = '\' )
 package ${package};
 
-import ${package}.architecture.auth.entities.Permission;
-import ${package}.architecture.auth.entities.PermissionId;
-import ${package}.architecture.auth.entities.Role;
-import ${package}.architecture.auth.entities.User;
-import ${package}.architecture.auth.repositories.UserRepository;
-import ${package}.architecture.auth.repositories.RoleRepository;
-import ${package}.architecture.auth.repositories.PermissionRepository;
-import ${package}.architecture.auth.services.UserService;
+import ${package}.arch.auth.entities.Privilege;
+import ${package}.arch.auth.entities.Role;
+import ${package}.arch.auth.entities.RolePrivilege;
+import ${package}.arch.auth.entities.RolePrivilegeId;
+import ${package}.arch.auth.entities.User;
+import ${package}.arch.auth.entities.UserPrivilege;
+import ${package}.arch.auth.entities.UserPrivilegeId;
+import ${package}.arch.auth.entities.UserRole;
+import ${package}.arch.auth.entities.UserRoleId;
+import ${package}.arch.auth.repositories.UserRepository;
+import ${package}.arch.auth.repositories.RoleRepository;
+import ${package}.arch.auth.repositories.PrivilegeRepository;
+import ${package}.arch.auth.repositories.RolePrivilegeRepository;
+import ${package}.arch.auth.repositories.UserPrivilegeRepository;
+import ${package}.arch.auth.repositories.UserRoleRepository;
+import ${package}.arch.auth.services.UserService;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,22 +39,34 @@ public class Initializer implements CommandLineRunner {
 
     private UserRepository userRepository;
 
-    private PermissionRepository permissionRepository;
+    private UserRoleRepository userRoleRepository;
+
+    private PrivilegeRepository privilegeRepository;
+
+    private RolePrivilegeRepository rolePrivilegeRepository;
+
+    private UserPrivilegeRepository userPrivilegeRepository;
 
     @Override
     @Transactional
     public void run(String... strings) throws Exception {
-        roleRepository.save(new Role(null, "Admin" , "Administrator"));
-        roleRepository.save(new Role(null, "User" , "User"));
-        
-        
-        userRepository.save(new User(null, "alice", "Alice", "admin", "alice@mail.com"));
-        userRepository.save(new User(null, "bob", "Bob", "user", "bob@mail.com"));
+        log.info("Initializer run ..");
+        Privilege writeUserPrivilege = privilegeRepository.save(new Privilege("WRITE_USER"));
+        Privilege readUserPrivilege = privilegeRepository.save(new Privilege("READ_USER"));
+        Privilege operationPrivilege = privilegeRepository.save(new Privilege("OPERATION"));
+        Role adminRole = roleRepository.save(new Role("admin"));
+        Role userRole = roleRepository.save(new Role("user"));
 
-        
-        permissionRepository.save(new Permission(new PermissionId(userRepository.getOne(1L), roleRepository.getOne(1L))));
-        permissionRepository.save(new Permission(new PermissionId(userRepository.getOne(2L), roleRepository.getOne(2L))));
-        
-        log.info("${symbol_escape}"alice${symbol_escape}" -> {}",userService.getUser("alice"));
+        User admin = userRepository.save(new User("alice", "Alice", "alice@mail.com"));
+        List<User> users = Arrays.asList(new User("bob", "Bob", "bob@mail.com"));
+        users = users.stream().map(userRepository::save).collect(Collectors.toList());
+        rolePrivilegeRepository.save(new RolePrivilege(new RolePrivilegeId(adminRole, writeUserPrivilege)));
+        rolePrivilegeRepository.save(new RolePrivilege(new RolePrivilegeId(adminRole, readUserPrivilege)));
+        rolePrivilegeRepository.save(new RolePrivilege(new RolePrivilegeId(userRole, readUserPrivilege)));
+        userPrivilegeRepository.save(new UserPrivilege(new UserPrivilegeId(admin, operationPrivilege)));
+        userRoleRepository.save(new UserRole(new UserRoleId(admin, adminRole)));
+        users.forEach(u -> userRoleRepository.save(new UserRole(new UserRoleId(u, userRole))));
+        log.info("${symbol_escape}"admin${symbol_escape}" -> {}", userService.getUser(admin.getUsername()));
+        log.info("Initializer ends");
     }
 }

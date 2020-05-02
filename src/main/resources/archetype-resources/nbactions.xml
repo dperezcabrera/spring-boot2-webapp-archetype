@@ -79,7 +79,7 @@
         <actionName>CUSTOM-dependency-check</actionName>
         <displayName>dependency-check</displayName>
         <goals>
-            <goal>org.owasp:dependency-check-maven:5.3.0:check</goal>
+            <goal>dependency-check:check</goal>
         </goals>
     </action>
 </actions>
