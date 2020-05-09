@@ -6,7 +6,7 @@ WORKDIR /app/
 RUN mvn package
 RUN mv target/*.jar target/spring-boot-app.jar
 
-FROM openjdk:12-jdk-oracle
+FROM openjdk:13-jdk-oracle
 EXPOSE 8080
 COPY --from=builder /app/target/spring-boot-app.jar /app/
 WORKDIR /
