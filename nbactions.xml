@@ -20,17 +20,6 @@
         </properties>
     </action>
     <action>
-        <actionName>CUSTOM-test_elk</actionName>
-        <displayName>script:test_elk</displayName>
-        <goals>
-            <goal>exec:exec</goal>
-        </goals>
-        <properties>
-            <exec.executable>bash</exec.executable>
-            <exec.args>.scripts/test_elk.sh</exec.args>
-        </properties>
-    </action>
-    <action>
         <actionName>CUSTOM-test</actionName>
         <displayName>script:review</displayName>
         <goals>

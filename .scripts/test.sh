@@ -26,12 +26,14 @@ mvn -DarchetypeGroupId=com.github.dperezcabrera -DarchetypeArtifactId=spring-boo
 
 cd "$PROJECT"
 
-mvn clean package docker:build
+docker build . -t dperezcabrera/$PROJECT
 docker run --name $PROJECT --rm -p 8080:8080 dperezcabrera/$PROJECT &
+
 
 sleep 20
 
 docker stop $PROJECT
 docker rmi dperezcabrera/$PROJECT
+docker images | grep '<none>' | tr -s " " | cut -f3 -d" " | while read line; do docker rmi $line; done
 cd ..
 # rm -rf "$PROJECT"

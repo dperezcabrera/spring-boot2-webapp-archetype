@@ -10,19 +10,35 @@
             <goal>spring-boot:run</goal>
         </goals>
     </action>
-    <action>
-        <actionName>CUSTOM-sonar-jacoco</actionName>
-        <displayName>sonar-jacoco</displayName>
+   <action>
+        <actionName>CUSTOM-jacoco</actionName>
+        <displayName>jacoco</displayName>
         <goals>
             <goal>clean</goal>
-            <goal>org.jacoco:jacoco-maven-plugin:0.8.5:prepare-agent</goal>
-            <goal>install</goal>
+            <goal>jacoco:prepare-agent</goal>
+            <goal>test</goal>
+            <goal>jacoco:report</goal>
+            <goal>jacoco:prepare-agent-integration</goal>
+            <goal>verify</goal>
+            <goal>jacoco:report-integration</goal>
+        </goals>
+    </action>
+    <action>
+        <actionName>CUSTOM-sonar</actionName>
+        <displayName>sonar</displayName>
+        <goals>
+            <goal>clean</goal>
+            <goal>jacoco:prepare-agent</goal>
+            <goal>test</goal>
+            <goal>jacoco:report</goal>
+            <goal>jacoco:prepare-agent-integration</goal>
+            <goal>verify</goal>
+            <goal>jacoco:report-integration</goal>
             <goal>sonar:sonar</goal>
         </goals>
-        <properties>
-            <sonar.host.url>http://localhost:9000</sonar.host.url>
-            <sonar.login></sonar.login>
-        </properties>
+        <activatedProfiles>
+            <activatedProfile>owasp</activatedProfile>
+        </activatedProfiles>
     </action>
     <action>
         <actionName>CUSTOM-dependency:sources</actionName>
